@@ -1,37 +1,24 @@
 #!/bin/bash
 
 # Define log file path
-LOG_FILE="/var/log/system_logs.log"
+LOG_FILE="/var/log/system_logs_$(date +%Y-%m-%d-%H-%M).log"
 
 # Create or clear the log file at the start of the script
-echo "=== System Update and Upgrade Log - $(date) ===" > "$LOG_FILE"
-
-# Function to log messages
-log_message() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
-}
+echo "=== System Update and Upgrade Log - ===" > "$LOG_FILE"
 
 # Start the update process
-log_message "Starting system update..."
+echo "Starting system update..."
 
 # make system update
-if sudo apt update >> "$LOG_FILE" 2>&1; then
-    log_message "Packages list updated successfully."
-else
-    log_message "Packages list updated successfully."
-    exit 1
-fi
+sudo apt update > $LOG_FILE 2>&1;
+    echo "Packages list updated successfully."
+
 
 # upgrade packages
-log_message "Starting system upgrading packages..."
+echo "Starting system upgrading packages..."
 
-# sudo apt update -y
-if sudo apt upgrade -y >> "$LOG_FILE" 2>&1; then
-    log_message "Packages upgraded successfully."
-else
-    log_message "Packages upgraded successfully."
-    exit 1
-fi
+sudo apt upgrade -y > $LOG_FILE 2>&1;
+    echo "Packages upgraded successfully."
 
 # Final message
-log_message "System update and upgrade process completed."
+echo "System update and upgrade process completed."
